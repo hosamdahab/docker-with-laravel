@@ -1,0 +1,54 @@
+version: :'3'
+
+networks:
+  laravel:
+
+services:
+
+# nginx
+  nginx:
+    image: nginx
+    container_name: hossam-nginx
+    volumes: 
+      - ./src/sherif:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8060:80"
+    depends_on :
+      - php
+      - mysql
+    networks:
+      - laravel
+
+# mysql
+  mysql:
+    image: 'library/mysql:5.7.22'
+    container_name: mysql-hossam
+    restart: 'unless-stopped'
+    ports:
+      - '3307:3306'
+    volumes:
+      - ./mysql:/var/lib/mysql
+    
+    environment:
+       MYSQL_DATABASE: dahab
+       MYSQL_USER: hossam
+       MYSQL_PASSWORD: test
+       MYSQL_ROOT_PASSWORD : test
+       SERVICE_TAG: dev
+       SERVICE_NAME: mysql
+    networks:
+      - laravel
+
+# php
+  php:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: php-hossam
+    volumes: 
+      - ./src/sherif:/var/www/html
+    ports:
+      - '9000:9000'
+    networks:
+      - laravel
