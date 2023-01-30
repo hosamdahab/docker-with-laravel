@@ -52,3 +52,25 @@ services:
       - '9000:9000'
     networks:
       - laravel
+
+# PHPMYADMIN Service
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: "phpmyadmin-hossam"
+    ports:
+        - "7000:80"
+    links:
+        - mysql:mysql
+    depends_on:
+      - mysql
+    environment:
+        MYSQL_USER: hossam
+        MYSQL_PASSWORD: test
+        MYSQL_ROOT_PASSWORD: test
+        MYSQL_ROOT_HOST: '%'
+        PMA_HOST: mysql
+        UPLOAD_LIMIT: 600M
+    networks:
+        - laravel
+
+
