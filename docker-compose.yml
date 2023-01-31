@@ -73,4 +73,21 @@ services:
     networks:
         - laravel
 
+#composer service
+  composer:
+    build:
+      context: .
+      dockerfile: DockerFile
+    container_name: composer-hossam
+    ports:
+        - "7010:90"
+    volumes: 
+      - ./src/elherafyeen2:/var/www/html
+    depends_on:
+    - php
+    networks:
+        - laravel
+    
+
+
 
